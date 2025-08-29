@@ -58,8 +58,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // -------- Avaliador sem libs: tokeniza -> Shunting-yard -> avalia RPN --------
-
     private fun evalSafe(expr: String): String = try {
         val res = evaluate(expr)
         if (res.isNaN() || res.isInfinite()) "Erro"
@@ -85,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         val clean = raw
             .replace("×", "*")
             .replace("÷", "/")
-            .replace(",", ".") // caso o usuário digite vírgula
+            .replace(",", ".")
 
         val tokens = tokenize(clean)
         val rpn = toRPN(tokens)
@@ -104,13 +102,11 @@ class MainActivity : AppCompatActivity() {
             when {
                 c.isWhitespace() -> i++
 
-                // número (com suporte a sinal unário e ponto)
                 c.isDigit() || (lastWasOpOrStart && (c == '+' || c == '-')) || c == '.' -> {
                     val start = i
                     var hasDot = (c == '.')
                     var j = i + 1
 
-                    // Se começou com sinal unário, continue
                     if (lastWasOpOrStart && (c == '+' || c == '-')) {
                         // depois do sinal, consome dígitos e ponto
                         while (j < s.length && (s[j].isDigit() || (s[j] == '.' && !hasDot))) {
