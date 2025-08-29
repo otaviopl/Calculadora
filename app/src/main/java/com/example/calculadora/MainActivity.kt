@@ -1,11 +1,13 @@
 package com.example.calculadora
-
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.button.MaterialButton
+import java.util.Locale
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.util.ArrayDeque
 import kotlin.math.abs
+import com.google.android.material.button.MaterialButton
 
 class MainActivity : AppCompatActivity() {
 
@@ -89,16 +91,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun formatResult(value: Double): String {
-        val rounded = String.format("%.10f", value).trimEnd('0').trimEnd('.')
-        val asDouble = rounded.toDoubleOrNull()
-        return if (asDouble != null && abs(asDouble - asDouble.toInt().toDouble()) < 1e-10)
-            asDouble.toInt().toString()
-        else
-            rounded
+        // Verifica se o número é "praticamente" um inteiro
+        // Usamos uma tolerância pequena (epsilon) para lidar com imprecisões de ponto flutuante.
+        if (abs(value - value.toLong().toDouble()) < 1e-9 && value.isFinite()) {
+            return value.toLong().toString() // Exibe como inteiro
+        } else {
+            // Para números decimais, formate com um ponto e até, por exemplo, 10 casas decimais,
+            // removendo zeros finais desnecessários.
+            // Usar Locale.US garante o ponto como separador decimal.
+            val symbols = DecimalFormatSymbols(Locale.US)
+            val df = DecimalFormat("#.##########", symbols) // Até 10 casas decimais
+            return df.format(value)
+        }
     }
-
-    private fun Double.roundToIntSafe(): Int =
-        if (this >= 0) (this + 0.0000000001).toInt() else (this - 0.0000000001).toInt()
 
     private enum class TokType { NUM, OP, PAREN }
     private data class Tok(val type: TokType, val s: String)
