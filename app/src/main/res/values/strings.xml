@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Calculadora</string>
+    <string name="error_div_zero">Não é possível dividir por zero</string>
+    <string name="error_invalid_expr">Expressão inválida</string>
+
 </resources>
