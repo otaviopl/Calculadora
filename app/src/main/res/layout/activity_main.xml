@@ -6,17 +6,6 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Linha de expressão -->
-    <TextView
-        android:id="@+id/tvExpression"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="18sp"
-        android:textColor="#80838A"
-        android:ellipsize="start"
-        android:singleLine="true"/>
-
     <!-- Resultado principal -->
     <TextView
         android:id="@+id/tvResult"
@@ -27,7 +16,6 @@
         android:textStyle="bold"
         android:gravity="end"
         android:paddingTop="8dp"/>
-
     <!-- Separador -->
     <View
         android:layout_width="match_parent"
